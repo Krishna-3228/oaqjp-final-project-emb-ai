@@ -11,11 +11,15 @@ def home():
 
 @app.route("/emotionDetector")
 def detect_emotion():
+
     text_to_analyze = request.args.get("textToAnalyze")
 
     response = emotion_detector(text_to_analyze)
 
-    output = (
+    if response["dominant_emotion"] is None:
+        return "Invalid text! Please try again!"
+
+    return (
         f"For the given statement, the system response is "
         f"'anger': {response['anger']}, "
         f"'disgust': {response['disgust']}, "
@@ -24,8 +28,6 @@ def detect_emotion():
         f"'sadness': {response['sadness']}. "
         f"The dominant emotion is {response['dominant_emotion']}."
     )
-
-    return output
 
 
 if __name__ == "__main__":
